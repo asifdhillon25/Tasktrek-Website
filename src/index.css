@@ -1,0 +1,79 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure select options are visible */
+select option {
+  background-color: white;
+  color: #1f2937;
+}
+
+select option:checked {
+  background: linear-gradient(#06b6d4, #06b6d4);
+  background-color: #06b6d4 !important;
+  color: white;
+}
+
+.glass {
+  @apply bg-blue-50/60 backdrop-blur-md border border-blue-200/40 rounded-xl;
+}
+
+.dark .glass {
+  @apply bg-white/5 backdrop-blur-md border border-white/10;
+}
+
+.gradient-text {
+  @apply bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent;
+}
+
+.gradient-border {
+  @apply relative before:absolute before:inset-0 before:rounded-lg before:p-px before:bg-gradient-to-r before:from-blue-500 before:to-cyan-500;
+}
+
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300 transform hover:scale-105;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 rounded-lg border-2 border-blue-600 text-blue-600 dark:text-cyan-400 dark:border-cyan-400 font-semibold hover:bg-blue-600/10 transition-all duration-300;
+  }
+
+  .card-shadow {
+    @apply shadow-xl shadow-blue-500/20 dark:shadow-cyan-500/20;
+  }
+
+  .section {
+    @apply py-20 px-4 md:px-8 lg:px-16;
+  }
+
+  .section-title {
+    @apply text-4xl md:text-5xl font-bold text-center mb-4 gradient-text;
+  }
+
+  .section-subtitle {
+    @apply text-lg text-gray-700 dark:text-gray-300 text-center mb-16 max-w-3xl mx-auto;
+  }
+}
