@@ -6,6 +6,7 @@ const BUSINESS_EMAIL = process.env.BUSINESS_EMAIL || 'tasktrek25@gmail.com'
 // Use your verified Resend domain here (e.g., 'noreply@yourdomain.resend.dev')
 // For now, using contact@ prefix with Resend's domain structure
 const SENDER_EMAIL = process.env.SENDER_EMAIL || 'contact@resend.dev'
+console.log('Config values:', { RESEND_API_KEY: !!RESEND_API_KEY, BUSINESS_EMAIL, SENDER_EMAIL })
 
 if (!RESEND_API_KEY) {
   console.error('ERROR: RESEND_API_KEY environment variable is not set')
