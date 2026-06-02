@@ -9,6 +9,5 @@
   },
   "env": {
     "RESEND_API_KEY": "re_DsxNLKz7_M8UqWJy72FJj5YRudYKQRfaB"
-  },
-  "envDescription": "Add RESEND_API_KEY secret in Vercel project settings"
+  }
 }
