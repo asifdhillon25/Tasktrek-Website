@@ -1,8 +1,17 @@
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const RESEND_API_KEY = process.env.RESEND_API_KEY
+const BUSINESS_EMAIL = process.env.BUSINESS_EMAIL || 'tasktrek25@gmail.com'
 
-const BUSINESS_EMAIL = 'tasktrek25@gmail.com'
+// Use your verified Resend domain here (e.g., 'noreply@yourdomain.resend.dev')
+// For now, using contact@ prefix with Resend's domain structure
+const SENDER_EMAIL = process.env.SENDER_EMAIL || 'contact@resend.dev'
+
+if (!RESEND_API_KEY) {
+  console.error('ERROR: RESEND_API_KEY environment variable is not set')
+}
+
+const resend = new Resend(RESEND_API_KEY)
 
 export default async function handler(req, res) {
   // Only allow POST requests
@@ -11,6 +20,8 @@ export default async function handler(req, res) {
   }
 
   const { name, email, country, service, deadline, message } = req.body
+
+  console.log('Received form submission:', { name, email, service })
 
   // Validation
   if (!name || !email || !country || !service || !deadline || !message) {
@@ -24,9 +35,11 @@ export default async function handler(req, res) {
   }
 
   try {
+    console.log('Sending email from:', SENDER_EMAIL, 'to business:', BUSINESS_EMAIL)
+    
     // Email to business owner
-    await resend.emails.send({
-      from: 'TaskTrek <onboarding@resend.dev>',
+    const businessEmailResult = await resend.emails.send({
+      from: SENDER_EMAIL,
       to: BUSINESS_EMAIL,
       replyTo: email,
       subject: `New Support Request from ${name} - ${service}`,
@@ -43,9 +56,11 @@ export default async function handler(req, res) {
       `,
     })
 
+    console.log('Business email result:', businessEmailResult)
+
     // Confirmation email to student
-    await resend.emails.send({
-      from: 'TaskTrek <onboarding@resend.dev>',
+    const studentEmailResult = await resend.emails.send({
+      from: SENDER_EMAIL,
       to: email,
       subject: 'We Received Your Request - TaskTrek',
       html: `
@@ -67,14 +82,30 @@ export default async function handler(req, res) {
       `,
     })
 
+    console.log('Student email result:', studentEmailResult)
+
+    // Check if both emails were sent successfully
+    if (businessEmailResult.error || studentEmailResult.error) {
+      console.error('Email sending errors:', { businessEmailResult, studentEmailResult })
+      return res.status(500).json({
+        error: 'Failed to send one or more emails',
+        details: businessEmailResult.error?.message || studentEmailResult.error?.message
+      })
+    }
+
     return res.status(200).json({
       success: true,
       message: 'Email sent successfully',
+      ids: {
+        business: businessEmailResult.id,
+        student: studentEmailResult.id
+      }
     })
   } catch (error) {
-    console.error('Email send error:', error)
+    console.error('Email send error:', error.message, error)
     return res.status(500).json({
       error: 'Failed to send email. Please try again later.',
+      details: error.message
     })
   }
 }

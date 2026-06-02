@@ -8,6 +8,8 @@
     }
   },
   "env": {
-    "RESEND_API_KEY": "re_DsxNLKz7_M8UqWJy72FJj5YRudYKQRfaB"
+    "RESEND_API_KEY": "@resend_api_key",
+    "BUSINESS_EMAIL": "tasktrek25@gmail.com",
+    "SENDER_EMAIL": "@sender_email"
   }
 }
