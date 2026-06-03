@@ -10,6 +10,7 @@ export default function Navbar({ isDark, toggleTheme }) {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10)
     }
+
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
@@ -26,6 +27,7 @@ export default function Navbar({ isDark, toggleTheme }) {
 
   const handleLinkClick = (href) => {
     setIsOpen(false)
+
     const element = document.querySelector(href)
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' })
@@ -45,16 +47,20 @@ export default function Navbar({ isDark, toggleTheme }) {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          {/* Logo */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="flex items-center space-x-2"
+          {/* Logo only */}
+          <motion.button
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.96 }}
+            onClick={() => handleLinkClick('#home')}
+            className="flex items-center"
+            aria-label="Go to home"
           >
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">T</span>
-            </div>
-            <span className="hidden sm:block font-bold text-xl gradient-text">TaskTrek</span>
-          </motion.div>
+            <img
+              src="/1.png"
+              alt="TaskTrek logo"
+              className="h-14 md:h-16 w-auto object-contain"
+            />
+          </motion.button>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-1">
@@ -86,7 +92,7 @@ export default function Navbar({ isDark, toggleTheme }) {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => document.querySelector('#contact').scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
               className="hidden sm:block btn-primary text-sm"
             >
               Get Help Now
@@ -96,6 +102,7 @@ export default function Navbar({ isDark, toggleTheme }) {
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-navy-800"
+              aria-label="Toggle menu"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -119,13 +126,11 @@ export default function Navbar({ isDark, toggleTheme }) {
                 {link.name}
               </button>
             ))}
+
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => {
-                setIsOpen(false)
-                document.querySelector('#contact').scrollIntoView({ behavior: 'smooth' })
-              }}
+              onClick={() => handleLinkClick('#contact')}
               className="w-full btn-primary text-sm mt-2"
             >
               Get Help Now

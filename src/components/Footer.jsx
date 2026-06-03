@@ -11,12 +11,14 @@ export default function Footer() {
       { name: 'Testimonials', href: '#testimonials' },
       { name: 'FAQ', href: '#faq' },
     ],
+
     Company: [
       { name: 'About', href: '#about' },
       { name: 'Blog', href: '#' },
       { name: 'Contact', href: '#contact' },
       { name: 'Careers', href: '#' },
     ],
+
     Legal: [
       { name: 'Privacy Policy', href: '#' },
       { name: 'Terms of Service', href: '#' },
@@ -39,6 +41,7 @@ export default function Footer() {
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
               Stay Updated with Academic Tips
             </h3>
+
             <p className="text-gray-600 dark:text-gray-400 mb-6">
               Subscribe to our newsletter for study strategies, tips, and updates.
             </p>
@@ -49,6 +52,7 @@ export default function Footer() {
                 placeholder="Enter your email"
                 className="flex-grow px-4 py-3 rounded-lg border border-gray-300 dark:border-navy-700 bg-white dark:bg-navy-800 text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 transition-colors"
               />
+
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -71,29 +75,55 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold">T</span>
-                </div>
-                <span className="font-bold text-xl gradient-text">TaskTrek</span>
-              </div>
-              <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 leading-relaxed">
-                Professional academic support for international students. Your journey, made easier.
+              {/* Logo */}
+              <motion.div
+                whileHover={{ scale: 1.03 }}
+                className="mb-5"
+              >
+                <img
+                  src="/1.png"
+                  alt="TaskTrek logo"
+                  className="h-16 w-auto object-contain"
+                />
+              </motion.div>
+
+              {/* Description */}
+              <p className="text-gray-600 dark:text-gray-400 text-sm mb-5 leading-relaxed max-w-xs">
+                Professional academic support for international students.
+                Assignments, research, coding projects, editing,
+                formatting, and deadline management — all in one place.
               </p>
+
+              {/* Social Icons */}
               <div className="flex gap-4">
-                <a href="#" className="w-10 h-10 rounded-lg bg-gray-200 dark:bg-navy-800 flex items-center justify-center hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
+                <a
+                  href="mailto:tasktrek25@gmail.com"
+                  className="w-10 h-10 rounded-xl bg-gray-200 dark:bg-navy-800 flex items-center justify-center hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors"
+                >
                   <Mail size={18} />
                 </a>
-                <a href="#" className="w-10 h-10 rounded-lg bg-gray-200 dark:bg-navy-800 flex items-center justify-center hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
+
+                <a
+                  href="https://www.linkedin.com/in/muhammad-asif-dhillon/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-xl bg-gray-200 dark:bg-navy-800 flex items-center justify-center hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors"
+                >
                   <Linkedin size={18} />
                 </a>
-                <a href="#" className="w-10 h-10 rounded-lg bg-gray-200 dark:bg-navy-800 flex items-center justify-center hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
+
+                <a
+                  href="https://github.com/asifdhillon25"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-xl bg-gray-200 dark:bg-navy-800 flex items-center justify-center hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors"
+                >
                   <Github size={18} />
                 </a>
               </div>
             </motion.div>
 
-            {/* Product Links */}
+            {/* Footer Links */}
             {Object.entries(footerLinks).map(([category, links]) => (
               <motion.div
                 key={category}
@@ -102,7 +132,10 @@ export default function Footer() {
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
               >
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-4">{category}</h4>
+                <h4 className="font-semibold text-gray-900 dark:text-white mb-4">
+                  {category}
+                </h4>
+
                 <ul className="space-y-3">
                   {links.map((link) => (
                     <li key={link.name}>
@@ -119,7 +152,7 @@ export default function Footer() {
             ))}
           </div>
 
-          {/* Divider */}
+          {/* Bottom Footer */}
           <div className="border-t border-gray-200 dark:border-navy-800/50 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
               <p className="text-gray-600 dark:text-gray-400 text-sm">

@@ -52,7 +52,7 @@ export default function App() {
           <Services />
           <WhyChoose />
           <Process />
-          <Testimonials />
+          {/* <Testimonials /> */}
           <FAQ />
           <Contact />
         </main>

@@ -4,6 +4,9 @@ import toast from 'react-hot-toast'
 import { Mail, Phone, MapPin, Send } from 'lucide-react'
 
 export default function Contact() {
+  const BUSINESS_EMAIL = 'tasktrek25@gmail.com'
+  const WHATSAPP_NUMBER = '923414152012'
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -12,7 +15,7 @@ export default function Contact() {
     deadline: '',
     message: '',
   })
-  const [isLoading, setIsLoading] = useState(false)
+
   const formRef = useRef(null)
 
   const handleChange = (e) => {
@@ -48,45 +51,47 @@ export default function Contact() {
     return true
   }
 
-  const handleSubmit = async (e) => {
+  const createMessageBody = () => {
+    return `Hello TaskTrek Team,
+
+I want to request academic support.
+
+Name: ${formData.name}
+Email: ${formData.email}
+Country: ${formData.country}
+Service Needed: ${formData.service}
+Deadline: ${formData.deadline}
+
+Project Details:
+${formData.message}
+
+Thank you.`
+  }
+
+  const handleSubmit = (e) => {
     e.preventDefault()
 
     if (!validateForm()) return
 
-    setIsLoading(true)
-    const toastId = toast.loading('Sending your message...')
+    const subject = `New TaskTrek Request - ${formData.service}`
+    const body = createMessageBody()
 
-    try {
-      const response = await fetch('/api/send', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      })
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
+      BUSINESS_EMAIL
+    )}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 
-      const data = await response.json()
+    window.open(gmailUrl, '_blank')
+    toast.success('Gmail opened with your message. Please click Send in Gmail.')
+  }
 
-      if (response.ok) {
-        toast.success('Message sent successfully! We\'ll be in touch soon.', { id: toastId })
-        formRef.current?.reset()
-        setFormData({
-          name: '',
-          email: '',
-          country: '',
-          service: '',
-          deadline: '',
-          message: '',
-        })
-      } else {
-        toast.error(data.error || 'Failed to send message. Please try again.', { id: toastId })
-      }
-    } catch (error) {
-      console.error('Form submission error:', error)
-      toast.error('An error occurred. Please try again later.', { id: toastId })
-    } finally {
-      setIsLoading(false)
-    }
+  const handleWhatsAppClick = () => {
+    if (!validateForm()) return
+
+    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+      createMessageBody()
+    )}`
+
+    window.open(whatsappUrl, '_blank')
   }
 
   const services = [
@@ -116,7 +121,6 @@ export default function Contact() {
 
   return (
     <section id="contact" className="section bg-white dark:bg-navy-900 relative overflow-hidden">
-      {/* Background decoration */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_40%_60%,rgba(59,130,246,0.1),transparent_50%)]" />
 
       <div className="relative z-10 max-w-7xl mx-auto">
@@ -128,58 +132,51 @@ export default function Contact() {
         >
           <h2 className="section-title">Get Professional Support Today</h2>
           <p className="section-subtitle">
-            Share your requirements and let us help you succeed academically. Our team will respond within 2 hours.
+            Share your requirements and contact us directly through Gmail or WhatsApp.
+            Our team will respond within 2 hours.
           </p>
         </motion.div>
 
         <div className="grid lg:grid-cols-3 gap-12">
-          {/* Contact Info */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className="space-y-8"
           >
-            <div>
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Mail size={20} className="text-white" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-gray-900 dark:text-white mb-1">Email</h3>
-                  <p className="text-gray-700 dark:text-gray-400">tasktrek25@gmail.com</p>
-                  <p className="text-gray-700 dark:text-gray-400 text-sm">Response within 2 hours</p>
-                </div>
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Mail size={20} className="text-white" />
+              </div>
+              <div>
+                <h3 className="font-bold text-gray-900 dark:text-white mb-1">Email</h3>
+                <p className="text-gray-700 dark:text-gray-400">tasktrek25@gmail.com</p>
+                <p className="text-gray-700 dark:text-gray-400 text-sm">Direct Gmail contact</p>
               </div>
             </div>
 
-            <div>
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Phone size={20} className="text-white" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-gray-900 dark:text-white mb-1">24/7 Support</h3>
-                  <p className="text-gray-700 dark:text-gray-400">Live chat available</p>
-                  <p className="text-gray-700 dark:text-gray-400 text-sm">Multiple time zones</p>
-                </div>
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Phone size={20} className="text-white" />
+              </div>
+              <div>
+                <h3 className="font-bold text-gray-900 dark:text-white mb-1">WhatsApp Support</h3>
+                <p className="text-gray-700 dark:text-gray-400">+92 341 4152012</p>
+                <p className="text-gray-700 dark:text-gray-400 text-sm">Fast response available</p>
               </div>
             </div>
 
-            <div>
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <MapPin size={20} className="text-white" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-gray-900 dark:text-white mb-1">Serving Globally</h3>
-                  <p className="text-gray-700 dark:text-gray-400">International students</p>
-                  <p className="text-gray-700 dark:text-gray-400 text-sm">120+ countries</p>
-                </div>
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                <MapPin size={20} className="text-white" />
+              </div>
+              <div>
+                <h3 className="font-bold text-gray-900 dark:text-white mb-1">Serving Globally</h3>
+                <p className="text-gray-700 dark:text-gray-400">International students</p>
+                <p className="text-gray-700 dark:text-gray-400 text-sm">120+ countries</p>
               </div>
             </div>
 
-            {/* Trust badges */}
             <div className="glass p-6 rounded-xl">
               <p className="text-sm font-semibold text-gray-900 dark:text-white mb-4">Why Contact Us?</p>
               <ul className="space-y-3 text-sm text-gray-700 dark:text-gray-300">
@@ -203,7 +200,6 @@ export default function Contact() {
             </div>
           </motion.div>
 
-          {/* Contact Form */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -213,7 +209,6 @@ export default function Contact() {
           >
             <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
-                {/* Name */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-900 dark:text-white mb-2">Name *</label>
                   <input
@@ -223,11 +218,9 @@ export default function Contact() {
                     onChange={handleChange}
                     placeholder="Your full name"
                     className="w-full px-4 py-3 rounded-lg bg-white dark:bg-white/10 border border-gray-300 dark:border-white/20 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 transition-colors"
-                    disabled={isLoading}
                   />
                 </div>
 
-                {/* Email */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-900 dark:text-white mb-2">Email *</label>
                   <input
@@ -237,11 +230,9 @@ export default function Contact() {
                     onChange={handleChange}
                     placeholder="your@email.com"
                     className="w-full px-4 py-3 rounded-lg bg-white dark:bg-white/10 border border-gray-300 dark:border-white/20 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 transition-colors"
-                    disabled={isLoading}
                   />
                 </div>
 
-                {/* Country */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-900 dark:text-white mb-2">Country *</label>
                   <select
@@ -249,7 +240,6 @@ export default function Contact() {
                     value={formData.country}
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-lg bg-white dark:bg-white/10 border border-gray-300 dark:border-white/20 text-gray-900 dark:text-white focus:outline-none focus:border-cyan-400 transition-colors"
-                    disabled={isLoading}
                   >
                     <option value="">Select your country</option>
                     {countries.map((country) => (
@@ -260,7 +250,6 @@ export default function Contact() {
                   </select>
                 </div>
 
-                {/* Service */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-900 dark:text-white mb-2">Service Needed *</label>
                   <select
@@ -268,7 +257,6 @@ export default function Contact() {
                     value={formData.service}
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-lg bg-white dark:bg-white/10 border border-gray-300 dark:border-white/20 text-gray-900 dark:text-white focus:outline-none focus:border-cyan-400 transition-colors"
-                    disabled={isLoading}
                   >
                     <option value="">Select a service</option>
                     {services.map((service) => (
@@ -280,7 +268,6 @@ export default function Contact() {
                 </div>
               </div>
 
-              {/* Deadline */}
               <div>
                 <label className="block text-sm font-semibold text-gray-900 dark:text-white mb-2">Deadline *</label>
                 <input
@@ -290,11 +277,9 @@ export default function Contact() {
                   onChange={handleChange}
                   placeholder="e.g., 5 days, March 15"
                   className="w-full px-4 py-3 rounded-lg bg-white dark:bg-white/10 border border-gray-300 dark:border-white/20 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 transition-colors"
-                  disabled={isLoading}
                 />
               </div>
 
-              {/* Message */}
               <div>
                 <label className="block text-sm font-semibold text-gray-900 dark:text-white mb-2">Tell Us About Your Project *</label>
                 <textarea
@@ -304,24 +289,34 @@ export default function Contact() {
                   placeholder="Describe your assignment, project, or academic challenge..."
                   rows={5}
                   className="w-full px-4 py-3 rounded-lg bg-white dark:bg-white/10 border border-gray-300 dark:border-white/20 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 transition-colors resize-none"
-                  disabled={isLoading}
                 />
               </div>
 
-              {/* Submit Button */}
-              <motion.button
-                whileHover={{ scale: isLoading ? 1 : 1.05 }}
-                whileTap={{ scale: isLoading ? 1 : 0.95 }}
-                type="submit"
-                disabled={isLoading}
-                className="w-full btn-primary flex items-center justify-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed"
-              >
-                <Send size={20} />
-                {isLoading ? 'Sending...' : 'Send Your Request'}
-              </motion.button>
+              <div className="grid md:grid-cols-2 gap-4">
+                <motion.button
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  type="submit"
+                  className="w-full btn-primary flex items-center justify-center gap-2"
+                >
+                  <Send size={20} />
+                  Open in Gmail
+                </motion.button>
+
+                <motion.button
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  type="button"
+                  onClick={handleWhatsAppClick}
+                  className="w-full btn-primary flex items-center justify-center gap-2"
+                >
+                  <Phone size={20} />
+                  Send on WhatsApp
+                </motion.button>
+              </div>
 
               <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-                We'll respond within 2 hours during business hours. Your information is completely confidential.
+                Your message will open in Gmail or WhatsApp with a ready-made template. Please review and send it.
               </p>
             </form>
           </motion.div>
